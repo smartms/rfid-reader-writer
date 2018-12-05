@@ -1,4 +1,4 @@
-package ru.smartms.rfidreader_writer
+package ru.smartms.rfidreaderwriter
 
 import org.junit.Test
 

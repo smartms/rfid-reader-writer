@@ -1,8 +1,8 @@
-package ru.smartms.rfidreader_writer
+package ru.smartms.rfidreaderwriter
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import ru.smartms.rfidreader_writer.ui.main.MainFragment
+import ru.smartms.rfidreaderwriter.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

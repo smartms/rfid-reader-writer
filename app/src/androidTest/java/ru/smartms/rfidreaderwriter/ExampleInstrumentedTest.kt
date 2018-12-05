@@ -1,4 +1,4 @@
-package ru.smartms.rfidreader_writer
+package ru.smartms.rfidreaderwriter
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

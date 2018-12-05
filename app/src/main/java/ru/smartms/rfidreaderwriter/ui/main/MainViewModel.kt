@@ -1,4 +1,4 @@
-package ru.smartms.rfidreader_writer.ui.main
+package ru.smartms.rfidreaderwriter.ui.main
 
 import android.arch.lifecycle.ViewModel
 
