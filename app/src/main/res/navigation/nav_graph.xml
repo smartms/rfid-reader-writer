@@ -5,5 +5,11 @@
             app:startDestination="@id/mainFragment">
 
     <fragment android:id="@+id/mainFragment" android:name="ru.smartms.rfidreaderwriter.ui.main.MainFragment"
-              android:label="main_fragment" tools:layout="@layout/main_fragment"/>
+              android:label="main_fragment" tools:layout="@layout/main_fragment">
+        <action android:id="@+id/action_mainFragment_to_scanDataDetailsFragment"
+                app:destination="@id/scanDataDetailsFragment"/>
+    </fragment>
+    <fragment android:id="@+id/scanDataDetailsFragment"
+              android:name="ru.smartms.rfidreaderwriter.ui.ScanDataDetailsFragment"
+              android:label="scan_data_details_fragment" tools:layout="@layout/scan_data_details_fragment"/>
 </navigation>

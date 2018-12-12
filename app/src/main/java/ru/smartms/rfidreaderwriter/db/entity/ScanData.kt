@@ -5,8 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ScanData(
-        @PrimaryKey(autoGenerate = true)
-        val id: Long,
-        val barcode: String,
-        val dateTime: String
-)
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
+    val barcode: String,
+    val dateTime: String
+) {
+    val count: Int = 0
+}

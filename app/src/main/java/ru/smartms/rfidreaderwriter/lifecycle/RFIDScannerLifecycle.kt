@@ -83,7 +83,14 @@ class RFIDScannerLifecycle : LifecycleObserver {
         }
     }
 
+    fun startInventory() {
+        runFlag = !runFlag
+    }
+
     private fun startScan() {
+        if (reader == null) {
+            return
+        }
         jobStartScan.cancel()
         jobStartScan = Job()
         GlobalScope.launch(jobStartScan) {
@@ -97,24 +104,22 @@ class RFIDScannerLifecycle : LifecycleObserver {
                 var epcList: ArrayList<ByteArray>
                 var isScanned = false
                 var epcStr: String
-                if (reader != null) {
-                    while (runFlag) {
-                        epcList = reader?.inventoryRealTime() as ArrayList<ByteArray>
-                        if (!epcList.isEmpty()) {
-                            sp?.play(1, 1F, 1F, 0, 0, 1F)
-                            epcList.forEach { epc ->
-                                epcStr = Tools.Bytes2HexString(epc, epc.size)
-                                val epcStringListTemp = epcStringList
-                                epcStringListTemp.forEach {
-                                    if (it == epcStr) {
-                                        isScanned = true
-                                    }
+                while (runFlag) {
+                    epcList = reader?.inventoryRealTime() as ArrayList<ByteArray>
+                    if (!epcList.isEmpty()) {
+                        sp?.play(1, 1F, 1F, 0, 0, 1F)
+                        epcList.forEach { epc ->
+                            epcStr = Tools.Bytes2HexString(epc, epc.size)
+                            val epcStringListTemp = epcStringList
+                            epcStringListTemp.forEach {
+                                if (it == epcStr) {
+                                    isScanned = true
                                 }
-                                if (!isScanned) {
-                                    epcStringList.add(epcStr)
-                                    val scanData = ScanData(0, epcStr, getCurrentDateTime())
-                                    scanDataRepository.insert(scanData)
-                                }
+                            }
+                            if (!isScanned) {
+                                epcStringList.add(epcStr)
+                                val scanData = ScanData(0, epcStr, getCurrentDateTime())
+                                scanDataRepository.insert(scanData)
                             }
                         }
                     }
@@ -125,23 +130,19 @@ class RFIDScannerLifecycle : LifecycleObserver {
         }
     }
 
-    fun onOffRFID(isStartScan: Boolean) {
+    fun onOffRFID(isPowerOn: Boolean) {
         setupUHFReader()
         if (reader != null) {
             sp?.play(1, 1F, 1F, 0, 0, 1F)
-            if (isStartScan) {
+            if (isPowerOn) {
                 try {
                     setUHF("1")
-                    runFlag = true
-                    GlobalScope.launch {
-                        startScan()
-                    }
+                    startScan()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             } else {
                 try {
-                    runFlag = false
                     setUHF("0")
                     jobStartScan.cancel()
                 } catch (e: Exception) {
@@ -152,8 +153,11 @@ class RFIDScannerLifecycle : LifecycleObserver {
     }
 
     private fun setUHF(p: String) {
-        val localFileWriterOff = FileWriter(File(
-                "/proc/gpiocontrol/set_uhf"))
+        val localFileWriterOff = FileWriter(
+            File(
+                "/proc/gpiocontrol/set_uhf"
+            )
+        )
         localFileWriterOff.write(p)
         localFileWriterOff.close()
     }
