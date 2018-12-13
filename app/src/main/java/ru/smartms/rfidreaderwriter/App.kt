@@ -2,6 +2,7 @@ package ru.smartms.rfidreaderwriter
 
 import android.app.Application
 import androidx.room.Room
+import com.facebook.stetho.Stetho
 import com.generalscan.bluetooth.BluetoothConnect
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -41,6 +42,25 @@ class App : Application() {
                 }
             }
         }
+
+        // Create an InitializerBuilder
+        val initializerBuilder = Stetho.newInitializerBuilder(this)
+
+        // Enable Chrome DevTools
+        initializerBuilder.enableWebKitInspector(
+            Stetho.defaultInspectorModulesProvider(this)
+        )
+
+        // Enable command line interface
+        initializerBuilder.enableDumpapp(
+            Stetho.defaultDumperPluginsProvider(this)
+        )
+
+        // Use the InitializerBuilder to generate an Initializer
+        val initializer = initializerBuilder.build()
+
+        // Initialize Stetho with the Initializer
+        Stetho.initialize(initializer)
     }
 
     private fun buildComponent(): AppComponent {

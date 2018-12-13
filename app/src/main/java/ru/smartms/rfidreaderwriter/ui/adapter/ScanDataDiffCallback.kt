@@ -6,10 +6,10 @@ import ru.smartms.rfidreaderwriter.db.entity.ScanData
 class ScanDataDiffCallback : DiffUtil.ItemCallback<ScanData>() {
 
     override fun areItemsTheSame(oldItem: ScanData, newItem: ScanData): Boolean {
-        return oldItem.barcode == newItem.barcode && oldItem.count == newItem.count
+        return oldItem.barcode == newItem.barcode
     }
 
     override fun areContentsTheSame(oldItem: ScanData, newItem: ScanData): Boolean {
-        return oldItem == newItem
+        return oldItem.barcode == newItem.barcode && oldItem.count == newItem.count
     }
 }

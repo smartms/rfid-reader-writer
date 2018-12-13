@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.smartms.rfidreaderwriter.R
 import kotlinx.android.synthetic.main.main_fragment.*
 import ru.smartms.rfidreaderwriter.lifecycle.BluetoothScannerLifecycle
@@ -34,29 +38,53 @@ class MainFragment : Fragment(), View.OnClickListener {
         lifecycle.addObserver(BluetoothScannerLifecycle())
         lifecycle.addObserver(rfidScannerLifecycle)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        val adapter = EpcAdapter { scanData ->
-            val bundle = Bundle()
-            bundle.putString("epc", scanData.barcode)
-            findNavController().navigate(R.id.action_mainFragment_to_scanDataDetailsFragment)
+        setupRV()
+        switch_start_scan.setOnCheckedChangeListener { _, isChecked ->
+            rfidScannerLifecycle.startInventory(isChecked)
         }
-        viewModel.getAllScanData().observe(this, Observer { scanDataList -> adapter.submitList(scanDataList) })
-        rv_epc.adapter = adapter
         switch_power.setOnCheckedChangeListener { _, isChecked ->
             rfidScannerLifecycle.onOffRFID(isChecked)
         }
 
     }
 
+    private fun setupRV() {
+        val adapter = EpcAdapter { scanData ->
+            val bundle = Bundle()
+            bundle.putString("epc", scanData.barcode)
+            findNavController().navigate(R.id.action_mainFragment_to_scanDataDetailsFragment, bundle)
+        }
+        viewModel.getAllScanData().observe(this, Observer { scanDataList ->
+            adapter.submitList(scanDataList)
+        })
+        rv_epc.adapter = adapter
+        val layoutManager = LinearLayoutManager(activity?.applicationContext)
+        rv_epc.layoutManager = LinearLayoutManager(activity?.applicationContext)
+        rv_epc.setHasFixedSize(true)
+        val dividerItemDecoration = DividerItemDecoration(
+            rv_epc.context,
+            layoutManager.orientation
+        )
+        rv_epc.addItemDecoration(dividerItemDecoration)
+        val simpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(simpleCallback)
+        itemTouchHelper.attachToRecyclerView(rv_epc)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_start_scan -> {
-                rfidScannerLifecycle.startInventory()
-                if (rfidScannerLifecycle.runFlag) {
-                    btn_start_scan.setText(R.string.start_scan)
-                } else {
-                    btn_start_scan.setText(R.string.stop_scan)
-                }
-            }
         }
     }
 }

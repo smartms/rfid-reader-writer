@@ -45,7 +45,8 @@ class RFIDScannerLifecycle : LifecycleObserver {
     private val readerDevice: UhfReaderDevice? by lazy { UhfReaderDevice.getInstance() }
     var runFlag: Boolean = false
     private val epcStringList = ArrayList<String>()
-    var jobStartScan: Job = Job()
+    private var jobStartScan: Job = Job()
+    var startFlag = false
 
     init {
         App.component.inject(this)
@@ -83,11 +84,11 @@ class RFIDScannerLifecycle : LifecycleObserver {
         }
     }
 
-    fun startInventory() {
-        runFlag = !runFlag
+    fun startInventory(isChecked: Boolean) {
+        startFlag = isChecked
     }
 
-    private fun startScan() {
+    fun startScan() {
         if (reader == null) {
             return
         }
@@ -102,26 +103,28 @@ class RFIDScannerLifecycle : LifecycleObserver {
             }
             try {
                 var epcList: ArrayList<ByteArray>
-                var isScanned = false
                 var epcStr: String
                 while (runFlag) {
-                    epcList = reader?.inventoryRealTime() as ArrayList<ByteArray>
-                    if (!epcList.isEmpty()) {
-                        sp?.play(1, 1F, 1F, 0, 0, 1F)
-                        epcList.forEach { epc ->
-                            epcStr = Tools.Bytes2HexString(epc, epc.size)
-                            val epcStringListTemp = epcStringList
-                            epcStringListTemp.forEach {
-                                if (it == epcStr) {
-                                    isScanned = true
+                    if (startFlag) {
+                        epcList = reader?.inventoryRealTime() as ArrayList<ByteArray>
+                        var isScanned = false
+                        if (!epcList.isEmpty()) {
+                            sp?.play(1, 1F, 1F, 0, 0, 1F)
+                            epcList.forEach { epc ->
+                                epcStr = Tools.Bytes2HexString(epc, epc.size)
+                                val epcStringListTemp = epcStringList
+                                epcStringListTemp.forEach {
+                                    if (it == epcStr) {
+                                        isScanned = true
+                                    }
                                 }
-                            }
-                            if (!isScanned) {
-                                epcStringList.add(epcStr)
-                                val scanData = ScanData()
-                                scanData.barcode = epcStr
-                                scanData.dateTime = getCurrentDateTime()
-                                scanDataRepository.insert(scanData)
+                                if (!isScanned) {
+                                    epcStringList.add(epcStr)
+                                    val scanData = ScanData()
+                                    scanData.barcode = epcStr
+                                    scanData.dateTime = getCurrentDateTime()
+                                    scanDataRepository.insert(scanData)
+                                }
                             }
                         }
                     }
@@ -139,6 +142,7 @@ class RFIDScannerLifecycle : LifecycleObserver {
             if (isPowerOn) {
                 try {
                     setUHF("1")
+                    runFlag = true
                     startScan()
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -146,6 +150,7 @@ class RFIDScannerLifecycle : LifecycleObserver {
             } else {
                 try {
                     setUHF("0")
+                    runFlag = false
                     jobStartScan.cancel()
                 } catch (e: Exception) {
                     e.printStackTrace()

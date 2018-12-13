@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.device.ScanDevice
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -16,6 +17,7 @@ import ru.smartms.rfidreaderwriter.App
 import ru.smartms.rfidreaderwriter.data.local.ScanDataRepository
 import ru.smartms.rfidreaderwriter.db.entity.ScanData
 import ru.smartms.rfidreaderwriter.utils.getCurrentDateTime
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -75,7 +77,11 @@ class BluetoothScannerLifecycle : LifecycleObserver {
             context.unregisterReceiver(scanBroadcast)
         }
         sm?.closeScan()
-        BluetoothConnect.UnBindService(context)
+        try {
+            BluetoothConnect.UnBindService(context)
+        } catch (e: Exception) {
+            Log.e("OnLifecycleDisconnect", e.localizedMessage)
+        }
     }
 
 
