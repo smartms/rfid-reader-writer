@@ -98,7 +98,9 @@ class BluetoothScannerLifecycle : LifecycleObserver {
                         var barcode = barcodeBuilder.toString().replace("\n", "")
                         barcode = barcode.replace("\r", "")
                         Toast.makeText(context, barcode, Toast.LENGTH_SHORT).show()
-                        val scanData = ScanData(0, barcode, getCurrentDateTime())
+                        val scanData = ScanData()
+                        scanData.barcode = barcode
+                        scanData.dateTime = getCurrentDateTime()
                         scanDataRepository.insert(scanData)
                         barcodeBuilder.setLength(0)
                     }
@@ -108,7 +110,9 @@ class BluetoothScannerLifecycle : LifecycleObserver {
                     val barocodelen = intent.getIntExtra("length", 0)
                     val temp = intent.getByteExtra("barcodeType", 0.toByte())
                     android.util.Log.i("debug", "----codetype--$temp")
-                    val scanData = ScanData(0, String(barocode, 0, barocodelen), getCurrentDateTime())
+                    val scanData = ScanData()
+                    scanData.barcode = String(barocode, 0, barocodelen)
+                    scanData.dateTime = getCurrentDateTime()
                     scanDataRepository.insert(scanData)
                 }
             }

@@ -1,6 +1,7 @@
 package ru.smartms.rfidreaderwriter
 
 import android.app.Application
+import androidx.room.Room
 import com.generalscan.bluetooth.BluetoothConnect
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -17,6 +18,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        App.db = Room.databaseBuilder(this, AppDatabase::class.java, "rfid-rw-db").build()
         component = buildComponent()
         BluetoothConnect.BindService(this)
         GlobalScope.launch {

@@ -118,7 +118,9 @@ class RFIDScannerLifecycle : LifecycleObserver {
                             }
                             if (!isScanned) {
                                 epcStringList.add(epcStr)
-                                val scanData = ScanData(0, epcStr, getCurrentDateTime())
+                                val scanData = ScanData()
+                                scanData.barcode = epcStr
+                                scanData.dateTime = getCurrentDateTime()
                                 scanDataRepository.insert(scanData)
                             }
                         }

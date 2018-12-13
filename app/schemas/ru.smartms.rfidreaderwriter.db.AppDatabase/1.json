@@ -2,28 +2,34 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "93df3a74b17083cb0741cf9781ff8e2a",
+    "identityHash": "80af098af4119e86a84beb7bc948d973",
     "entities": [
       {
         "tableName": "ScanData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `barcode` TEXT NOT NULL, `dateTime` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `barcode` TEXT, `dateTime` TEXT, `count` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "barcode",
             "columnName": "barcode",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "dateTime",
             "columnName": "dateTime",
             "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "count",
+            "columnName": "count",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -72,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"93df3a74b17083cb0741cf9781ff8e2a\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"80af098af4119e86a84beb7bc948d973\")"
     ]
   }
 }
