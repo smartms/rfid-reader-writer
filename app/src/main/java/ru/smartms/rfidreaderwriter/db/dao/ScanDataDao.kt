@@ -10,7 +10,7 @@ import ru.smartms.rfidreaderwriter.db.entity.ScanData
 @Dao
 interface ScanDataDao {
 
-    @Query("SELECT 0 as id, COUNT(barcode) as count, barcode FROM scandata GROUP BY barcode")
+    @Query("SELECT 0 as id, COUNT(barcode) as count, barcode, isRFID FROM scandata WHERE isRFID = 1 GROUP BY barcode")
     fun getAll(): LiveData<List<ScanData>>
 
     @Query("SELECT * FROM scandata ORDER BY ID DESC LIMIT 1")
@@ -24,4 +24,7 @@ interface ScanDataDao {
 
     @Query("DELETE FROM scandata")
     fun deleteAll()
+
+    @Query("DELETE FROM scandata WHERE barcode = :barcode")
+    fun delete(barcode: String?)
 }

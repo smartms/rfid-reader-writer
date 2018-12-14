@@ -107,6 +107,7 @@ class BluetoothScannerLifecycle : LifecycleObserver {
                         val scanData = ScanData()
                         scanData.barcode = barcode
                         scanData.dateTime = getCurrentDateTime()
+                        scanData.isRFID = false
                         scanDataRepository.insert(scanData)
                         barcodeBuilder.setLength(0)
                     }
@@ -119,6 +120,7 @@ class BluetoothScannerLifecycle : LifecycleObserver {
                     val scanData = ScanData()
                     scanData.barcode = String(barocode, 0, barocodelen)
                     scanData.dateTime = getCurrentDateTime()
+                    scanData.isRFID = false
                     scanDataRepository.insert(scanData)
                 }
             }

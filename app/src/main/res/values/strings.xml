@@ -9,4 +9,8 @@
     <string name="read">Read</string>
     <string name="write">Write</string>
     <string name="epc_hex">EPC(Hex)</string>
+    <string name="read_failure">Read failure</string>
+    <string name="write_success">Write success</string>
+    <string name="write_failure">Write failure</string>
+    <string name="no_data">No data</string>
 </resources>

@@ -57,10 +57,10 @@ class RFIDScannerLifecycle : LifecycleObserver {
 
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun disconnect() {
         runFlag = false
-        reader?.close()
+//        reader?.close()
         readerDevice?.powerOff()
     }
 

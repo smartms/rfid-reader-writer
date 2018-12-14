@@ -9,5 +9,6 @@ class ScanData {
     var id: Long? = null
     var barcode: String? = null
     var dateTime: String? =  null
+    var isRFID: Boolean = true
     var count: Int = 1
 }

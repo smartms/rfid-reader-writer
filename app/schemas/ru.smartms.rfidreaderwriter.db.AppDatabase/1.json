@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "80af098af4119e86a84beb7bc948d973",
+    "identityHash": "b919d5ac5de3bc5ea13175d2041c3e32",
     "entities": [
       {
         "tableName": "ScanData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `barcode` TEXT, `dateTime` TEXT, `count` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `barcode` TEXT, `dateTime` TEXT, `isRFID` INTEGER NOT NULL, `count` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -25,6 +25,12 @@
             "columnName": "dateTime",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "isRFID",
+            "columnName": "isRFID",
+            "affinity": "INTEGER",
+            "notNull": true
           },
           {
             "fieldPath": "count",
@@ -78,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"80af098af4119e86a84beb7bc948d973\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b919d5ac5de3bc5ea13175d2041c3e32\")"
     ]
   }
 }

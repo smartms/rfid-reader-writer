@@ -16,4 +16,7 @@ class ScanDataRepository @Inject constructor(private val scanDataDao: ScanDataDa
     fun deleteAll() = GlobalScope.launch { scanDataDao.deleteAll() }
 
     fun insert(scanData: ScanData) = GlobalScope.launch { scanDataDao.insert(scanData) }
+    fun deleteScanData(barcode: String?) {
+        scanDataDao.delete(barcode)
+    }
 }

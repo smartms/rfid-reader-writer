@@ -59,6 +59,7 @@
             android:id="@+id/tiet_read_epc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="12"
             android:hint="@string/epc" />
     </com.google.android.material.textfield.TextInputLayout>
 
