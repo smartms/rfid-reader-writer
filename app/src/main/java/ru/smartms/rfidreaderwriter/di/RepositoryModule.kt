@@ -1,4 +1,4 @@
-package ru.smartms.smallsmarty.di
+package ru.smartms.rfidreaderwriter.di
 
 import dagger.Module
 import dagger.Provides

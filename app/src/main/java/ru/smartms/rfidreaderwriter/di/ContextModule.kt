@@ -1,4 +1,4 @@
-package ru.smartms.smallsmarty.di
+package ru.smartms.rfidreaderwriter.di
 
 import android.content.Context
 import dagger.Module

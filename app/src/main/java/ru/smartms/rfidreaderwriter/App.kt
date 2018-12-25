@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.smartms.rfidreaderwriter.db.AppDatabase
 
-import ru.smartms.smallsmarty.di.*
+import ru.smartms.rfidreaderwriter.di.*
 
 class App : Application() {
     companion object {

@@ -10,7 +10,7 @@ import ru.smartms.rfidreaderwriter.db.entity.ScanData
 @Dao
 interface ScanDataDao {
 
-    @Query("SELECT 0 as id, COUNT(barcode) as count, barcode, isRFID FROM scandata WHERE isRFID = 1 GROUP BY barcode")
+    @Query("SELECT 0 as id, COUNT(barcode) as count, barcode, isRFID, '' as dateTime FROM scandata WHERE isRFID = 1 GROUP BY barcode")
     fun getAll(): LiveData<List<ScanData>>
 
     @Query("SELECT * FROM scandata WHERE isRFID = 0 LIMIT 1")
