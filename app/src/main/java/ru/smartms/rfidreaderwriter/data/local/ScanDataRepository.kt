@@ -19,4 +19,7 @@ class ScanDataRepository @Inject constructor(private val scanDataDao: ScanDataDa
     fun deleteScanData(barcode: String?) {
         scanDataDao.delete(barcode)
     }
+
+    fun getScanDataBarcode(): LiveData<ScanData>? = scanDataDao.getBarcode()
+    fun deleteScanDataBarcode() = scanDataDao.deleteBarcode()
 }

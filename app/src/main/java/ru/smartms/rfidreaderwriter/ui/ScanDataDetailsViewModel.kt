@@ -57,7 +57,15 @@ class ScanDataDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     fun getScanData(): LiveData<List<ScanData>>? = scanDataRepository.getScanData()
 
+    fun getScanDataBarcode(): LiveData<ScanData>? = scanDataRepository.getScanDataBarcode()
+
     fun deleteScanData() = scanDataRepository.deleteAll()
+
+    fun deleteScanDataBarcode()  {
+        GlobalScope.launch {
+            scanDataRepository.deleteScanDataBarcode()
+        }
+    }
 
     fun setEPC(epc: String) {
         reader?.selectEpc(Tools.HexString2Bytes(epc));

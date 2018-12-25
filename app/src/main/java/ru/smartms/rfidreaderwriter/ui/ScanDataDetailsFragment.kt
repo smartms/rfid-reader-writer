@@ -60,11 +60,10 @@ class ScanDataDetailsFragment : Fragment(), View.OnClickListener {
                 }
             }
         })
-        viewModel.getScanData()?.observe(this, Observer { scanData ->
+        viewModel.getScanDataBarcode()?.observe(this, Observer { scanData ->
             if (scanData != null) {
-                if (!scanData.isEmpty() && !scanData[0].isRFID) {
-                    tiet_read_epc.setText(scanData[0].barcode)
-                }
+                tiet_read_epc.setText(scanData.barcode)
+                viewModel.deleteScanDataBarcode()
             }
         })
     }
@@ -77,14 +76,14 @@ class ScanDataDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-       when (v?.id) {
-           R.id.btn_read -> {
-               viewModel.readEpc(tiet_password.text.toString())
-           }
-           R.id.btn_write -> {
-               viewModel.writeEpc(tiet_read_epc.text.toString(), tiet_password.text.toString())
-           }
-       }
+        when (v?.id) {
+            R.id.btn_read -> {
+                viewModel.readEpc(tiet_password.text.toString())
+            }
+            R.id.btn_write -> {
+                viewModel.writeEpc(tiet_read_epc.text.toString(), tiet_password.text.toString())
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

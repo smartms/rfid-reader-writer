@@ -13,6 +13,9 @@ interface ScanDataDao {
     @Query("SELECT 0 as id, COUNT(barcode) as count, barcode, isRFID FROM scandata WHERE isRFID = 1 GROUP BY barcode")
     fun getAll(): LiveData<List<ScanData>>
 
+    @Query("SELECT * FROM scandata WHERE isRFID = 0 LIMIT 1")
+    fun getBarcode(): LiveData<ScanData>
+
     @Query("SELECT * FROM scandata ORDER BY ID DESC LIMIT 1")
     fun getLast(): LiveData<List<ScanData>>
 
@@ -27,4 +30,7 @@ interface ScanDataDao {
 
     @Query("DELETE FROM scandata WHERE barcode = :barcode")
     fun delete(barcode: String?)
+
+    @Query("DELETE FROM scandata WHERE isRFID = 0")
+    fun deleteBarcode()
 }
